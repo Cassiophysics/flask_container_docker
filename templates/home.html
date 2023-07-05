@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Inserir Dados</title>
+</head>
+<body>
+    <h1>Inserir Dados</h1>
+    <form id="data-form">
+        <label for="balance">BALANCE:</label>
+        <input type="text" id="balance" name="balance"><br>
+
+        <label for="balance-frequency">BALANCE_FREQUENCY:</label>
+        <input type="text" id="balance-frequency" name="balance-frequency"><br>
+
+        <label for="purchases">PURCHASES:</label>
+        <input type="text" id="purchases" name="purchases"><br>
+
+        <label for="oneoff-purchases">ONEOFF_PURCHASES:</label>
+        <input type="text" id="oneoff-purchases" name="oneoff-purchases"><br>
+
+        <label for="installments-purchases">INSTALLMENTS_PURCHASES:</label>
+        <input type="text" id="installments-purchases" name="installments-purchases"><br>
+
+        <label for="cash-advance">CASH_ADVANCE:</label>
+        <input type="text" id="cash-advance" name="cash-advance"><br>
+
+        <label for="purchases-frequency">PURCHASES_FREQUENCY:</label>
+        <input type="text" id="purchases-frequency" name="purchases-frequency"><br>
+
+        <label for="oneoff-purchases-frequency">ONEOFF_PURCHASES_FREQUENCY:</label>
+        <input type="text" id="oneoff-purchases-frequency" name="oneoff-purchases-frequency"><br>
+
+        <label for="purchases-installments-frequency">PURCHASES_INSTALLMENTS_FREQUENCY:</label>
+        <input type="text" id="purchases-installments-frequency" name="purchases-installments-frequency"><br>
+
+        <label for="cash-advance-frequency">CASH_ADVANCE_FREQUENCY:</label>
+        <input type="text" id="cash-advance-frequency" name="cash-advance-frequency"><br>
+
+        <label for="cash-advance-trx">CASH_ADVANCE_TRX:</label>
+        <input type="text" id="cash-advance-trx" name="cash-advance-txr"><br>
+
+        <label for="purchases-trx">PURCHASES_TRX:</label>
+        <input type="text" id="purchases-trx" name="purchases-trx"><br>
+
+        <label for="credit-limit">CREDIT_LIMIT:</label>
+        <input type="text" id="credit-limit" name="credit-limit"><br>
+
+        <label for="payments">PAYMENTS:</label>
+        <input type="text" id="payments" name="payments"><br>
+
+        <label for="minimum-payments">MINIMUM_PAYMENTS:</label>
+        <input type="text" id="minimum-payments" name="minimum-payments"><br>
+
+        <label for="prc-full-payment">PRC_FULL_PAYMENT:</label>
+        <input type="text" id="prc-full-payment" name="prc-full-payment"><br>
+
+        <label for="tenure">TENURE:</label>
+        <input type="text" id="tenure" name="tenure"><br>
+
+        <!-- Adicionar campos para os outros atributos do dataset -->
+
+        <button type="submit">Enviar</button>
+    </form>
+
+    <div id="prediction-result"></div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#data-form').submit(function(event) {
+                event.preventDefault();
+
+                // Obter os valores inseridos nos campos de entrada
+                var balance = $('#balance').val();
+                var balanceFrequency = $('#balance-frequency').val();
+                var purchases = $('#purchases').val();
+                var oneOffPurchases = $('#oneoff-purchases').val();
+                var installmentsPurchases = $('#installments-purchases').val();
+                var cashAdvance = $('#cash-advance').val();
+                var purchasesFrequency = $('#purchases-frequency').val();
+                var oneOffPurchasesFrequency = $('#oneoff-purchases-frequency').val();
+                var purchasesInstallmentsFrequency = $('#purchases-installments-frequency').val();
+                var cashAdvanceFrequency = $('#cash-advance-frequency').val();
+                var cashAdvanceTrx = $('#cash-advance-trx').val();
+                var purchasesTrx = $('#purchases-trx').val();
+                var creditLimit = $('#credit-limit').val();
+                var payments = $('#payments').val();
+                var minimumPayments = $('#minimum-payments').val();
+                var prcFullPayment = $('#prc-full-payment').val();
+                var tenure = $('#tenure').val();
+
+         // Adicionar os outros atributos do dataset
+
+                var data = {
+        'BALANCE': [[parseInt(balance)]],
+        'BALANCE_FREQUENCY': [[parseFloat(balanceFrequency)]],
+        'PURCHASES': [[parseInt(purchases)]],
+        'ONEOFF_PURCHASES': [[parseInt(oneOffPurchases)]],
+        'INSTALLMENTS_PURCHASES': [[parseInt(installmentsPurchases)]],
+        'CASH_ADVANCE': [[parseInt(cashAdvance)]],
+        'PURCHASES_FREQUENCY': [[parseFloat(purchasesFrequency)]],
+        'ONEOFF_PURCHASES_FREQUENCY': [[parseFloat(oneOffPurchasesFrequency)]],
+        'PURCHASES_INSTALLMENTS_FREQUENCY': [[parseFloat(purchasesInstallmentsFrequency)]],
+        'CASH_ADVANCE_FREQUENCY': [[parseFloat(cashAdvanceFrequency)]],
+        'CASH_ADVANCE_TRX': [[parseInt(cashAdvanceTrx)]],
+        'PURCHASES_TRX': [[parseInt(purchasesTrx)]],
+        'CREDIT_LIMIT': [[parseInt(creditLimit)]],
+        'PAYMENTS': [[parseInt(payments)]],
+        'MINIMUM_PAYMENTS': [[parseFloat(minimumPayments)]],
+        'PRC_FULL_PAYMENT': [[parseFloat(prcFullPayment)]],
+        'TENURE': [[parseInt(tenure)]]
+                };
+
+
+                
+                // Enviar os dados para a rota de previsão usando AJAX
+                $.ajax({
+                    url: '/predict',
+                    type: 'POST',
+                    data: JSON.stringify(data),
+                    contentType: 'application/json',
+                    success: function(response) {
+                        // Exibir a previsão retornada pela API
+                        $('#prediction-result').text('Prediction: ' + response.prediction);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
